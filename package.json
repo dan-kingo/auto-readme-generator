@@ -20,7 +20,7 @@
     "git-hooks",
     "automation"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Dan-Kingo danieldejen23@gmail.com",
   "license": "MIT",
   "dependencies": {
     "inquirer": "^9.2.12",
@@ -44,12 +44,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/auto-readme-generator.git"
+    "url": "https://github.com/dan-kingo/auto-readme-generator.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/auto-readme-generator/issues"
+    "url": "https://github.com/dan-kingo/auto-readme-generator/issues"
   },
-  "homepage": "https://github.com/yourusername/auto-readme-generator#readme",
+  "homepage": "https://github.com/dan-kingo/auto-readme-generator#readme",
   "files": [
     "bin/",
     "src/",
