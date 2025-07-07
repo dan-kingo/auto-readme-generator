@@ -1,10 +1,12 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { glob } = require('glob');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { glob } from 'glob';
 
-async function generateFolderStructure(projectRoot) {
-  const structure = [];
-  
+interface TreeNode {
+  [key: string]: TreeNode | null;
+}
+
+export async function generateFolderStructure(projectRoot: string): Promise<string> {
   try {
     // Get all files and directories
     const files = await glob('**/*', {
@@ -30,13 +32,13 @@ async function generateFolderStructure(projectRoot) {
     // Convert tree to readable format
     return formatTree(tree);
   } catch (error) {
-    console.error('Error generating folder structure:', error.message);
+    console.error('Error generating folder structure:', (error as Error).message);
     return 'Error generating folder structure';
   }
 }
 
-function buildTree(files) {
-  const tree = {};
+function buildTree(files: string[]): TreeNode {
+  const tree: TreeNode = {};
   
   files.forEach(file => {
     const parts = file.split(path.sep);
@@ -47,7 +49,7 @@ function buildTree(files) {
         current[part] = index === parts.length - 1 ? null : {};
       }
       if (current[part] !== null) {
-        current = current[part];
+        current = current[part] as TreeNode;
       }
     });
   });
@@ -55,8 +57,8 @@ function buildTree(files) {
   return tree;
 }
 
-function formatTree(tree, prefix = '', isRoot = true) {
-  const lines = [];
+function formatTree(tree: TreeNode, prefix = '', isRoot = true): string {
+  const lines: string[] = [];
   const entries = Object.entries(tree);
   
   entries.forEach(([name, subtree], index) => {
@@ -68,13 +70,9 @@ function formatTree(tree, prefix = '', isRoot = true) {
     lines.push(currentPrefix + connector + name);
     
     if (subtree !== null) {
-      lines.push(...formatTree(subtree, nextPrefix, false));
+      lines.push(formatTree(subtree, nextPrefix, false));
     }
   });
   
   return lines.join('\n');
 }
-
-module.exports = {
-  generateFolderStructure
-};

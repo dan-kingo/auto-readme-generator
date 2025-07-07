@@ -1,9 +1,10 @@
-const fs = require('fs-extra');
-const path = require('path');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { Config } from './types';
 
 const CONFIG_FILE = '.autoreadme.json';
 
-async function loadConfig() {
+export async function loadConfig(): Promise<Config> {
   const configPath = path.join(process.cwd(), CONFIG_FILE);
   
   try {
@@ -17,12 +18,14 @@ async function loadConfig() {
   return getDefaultConfig();
 }
 
-async function saveConfig(config) {
+export async function saveConfig(config: Partial<Config>): Promise<void> {
   const configPath = path.join(process.cwd(), CONFIG_FILE);
-  await fs.writeJson(configPath, config, { spaces: 2 });
+  const currentConfig = await loadConfig();
+  const mergedConfig = { ...currentConfig, ...config };
+  await fs.writeJson(configPath, mergedConfig, { spaces: 2 });
 }
 
-function getDefaultConfig() {
+export function getDefaultConfig(): Config {
   return {
     projectName: '',
     description: '',
@@ -41,9 +44,3 @@ function getDefaultConfig() {
     lastChecksum: ''
   };
 }
-
-module.exports = {
-  loadConfig,
-  saveConfig,
-  getDefaultConfig
-};

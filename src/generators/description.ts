@@ -1,8 +1,9 @@
-const axios = require('axios');
-const fs = require('fs-extra');
-const path = require('path');
+import axios from 'axios';
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { ProjectAnalysis } from '../types';
 
-async function generateDescription(projectRoot, apiKey) {
+export async function generateDescription(projectRoot: string, apiKey: string): Promise<string> {
   try {
     // Analyze project files to understand what it does
     const projectInfo = await analyzeProject(projectRoot);
@@ -43,13 +44,13 @@ Generate a professional description that explains what this project does and its
 
     return response.data.choices[0].message.content.trim();
   } catch (error) {
-    console.error('Error generating AI description:', error.message);
+    console.error('Error generating AI description:', (error as Error).message);
     return 'A modern application built with cutting-edge technologies.';
   }
 }
 
-async function analyzeProject(projectRoot) {
-  const info = {
+async function analyzeProject(projectRoot: string): Promise<ProjectAnalysis> {
+  const info: ProjectAnalysis = {
     name: path.basename(projectRoot),
     language: 'Unknown',
     framework: 'Unknown',
@@ -118,12 +119,8 @@ async function analyzeProject(projectRoot) {
     }
 
   } catch (error) {
-    console.error('Error analyzing project:', error.message);
+    console.error('Error analyzing project:', (error as Error).message);
   }
 
   return info;
 }
-
-module.exports = {
-  generateDescription
-};

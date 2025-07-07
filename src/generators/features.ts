@@ -1,9 +1,9 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { glob } = require('glob');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { glob } from 'glob';
 
-async function extractFeatures(projectRoot) {
-  const features = [];
+export async function extractFeatures(projectRoot: string): Promise<string[]> {
+  const features: string[] = [];
   
   try {
     // Get all source files
@@ -30,13 +30,13 @@ async function extractFeatures(projectRoot) {
     const uniqueFeatures = [...new Set(features)];
     return uniqueFeatures.length > 0 ? uniqueFeatures : ['Feature extraction in progress...'];
   } catch (error) {
-    console.error('Error extracting features:', error.message);
+    console.error('Error extracting features:', (error as Error).message);
     return ['Error extracting features'];
   }
 }
 
-function extractFromComments(content) {
-  const features = [];
+function extractFromComments(content: string): string[] {
+  const features: string[] = [];
   
   // Look for feature comments
   const featureRegex = /(?:\/\/|\/\*|\*|#)\s*(?:feature|todo|fixme|note):\s*(.+)/gi;
@@ -49,8 +49,8 @@ function extractFromComments(content) {
   return features;
 }
 
-function extractFromCode(content, filename) {
-  const features = [];
+function extractFromCode(content: string, filename: string): string[] {
+  const features: string[] = [];
   
   // Detect common patterns
   if (content.includes('express()') || content.includes('app.listen')) {
@@ -95,7 +95,3 @@ function extractFromCode(content, filename) {
   
   return features;
 }
-
-module.exports = {
-  extractFeatures
-};

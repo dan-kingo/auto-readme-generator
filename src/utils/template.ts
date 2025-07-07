@@ -1,5 +1,7 @@
-async function generateReadmeContent(projectInfo, config) {
-  const sections = [];
+import { ProjectInfo, Config } from '../types';
+
+export async function generateReadmeContent(projectInfo: ProjectInfo, config: Config): Promise<string> {
+  const sections: string[] = [];
   
   // Title
   sections.push(`# ${projectInfo.projectName}`);
@@ -86,14 +88,14 @@ ${command}
   
   // Usage
   sections.push('\n## Usage');
-  if (projectInfo.packageInfo && projectInfo.packageInfo.scripts.start) {
+  if (projectInfo.packageInfo && projectInfo.packageInfo.scripts?.start) {
     sections.push(`\n1. Start the application:
 \`\`\`bash
 npm start
 \`\`\``);
     
     sections.push(`\n2. Open your browser and navigate to \`http://localhost:3000\``);
-  } else if (projectInfo.packageInfo && projectInfo.packageInfo.scripts.dev) {
+  } else if (projectInfo.packageInfo && projectInfo.packageInfo.scripts?.dev) {
     sections.push(`\n1. Start the development server:
 \`\`\`bash
 npm run dev
@@ -124,7 +126,3 @@ npm run dev
   
   return sections.join('\n');
 }
-
-module.exports = {
-  generateReadmeContent
-};

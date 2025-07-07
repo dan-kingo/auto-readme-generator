@@ -1,9 +1,9 @@
-const fs = require('fs-extra');
-const crypto = require('crypto');
-const path = require('path');
-const { glob } = require('glob');
+import * as fs from 'fs-extra';
+import * as crypto from 'crypto';
+import * as path from 'path';
+import { glob } from 'glob';
 
-async function calculateChecksum(projectRoot) {
+export async function calculateChecksum(projectRoot: string): Promise<string> {
   try {
     // Get all relevant files
     const files = await glob('**/*', {
@@ -35,11 +35,7 @@ async function calculateChecksum(projectRoot) {
     
     return hash.digest('hex');
   } catch (error) {
-    console.error('Error calculating checksum:', error.message);
+    console.error('Error calculating checksum:', (error as Error).message);
     return '';
   }
 }
-
-module.exports = {
-  calculateChecksum
-};

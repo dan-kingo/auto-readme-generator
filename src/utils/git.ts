@@ -1,11 +1,11 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { exec } = require('child_process');
-const { promisify } = require('util');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
-async function setupGitHooks() {
+export async function setupGitHooks(): Promise<void> {
   try {
     // Check if we're in a git repository
     await execAsync('git rev-parse --git-dir');
@@ -23,10 +23,6 @@ git add README.md
     
     console.log('Git hooks setup successfully');
   } catch (error) {
-    console.error('Error setting up git hooks:', error.message);
+    console.error('Error setting up git hooks:', (error as Error).message);
   }
 }
-
-module.exports = {
-  setupGitHooks
-};

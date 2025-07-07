@@ -1,11 +1,11 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { exec } = require('child_process');
-const { promisify } = require('util');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
 
 const execAsync = promisify(exec);
 
-async function postInstall() {
+export async function postInstall(): Promise<void> {
   try {
     console.log('Setting up Auto README Generator...');
     
@@ -37,7 +37,7 @@ async function postInstall() {
     
     console.log('Auto README Generator setup complete!');
   } catch (error) {
-    console.error('Setup failed:', error.message);
+    console.error('Setup failed:', (error as Error).message);
   }
 }
 
@@ -45,5 +45,3 @@ async function postInstall() {
 if (require.main === module) {
   postInstall();
 }
-
-module.exports = { postInstall };

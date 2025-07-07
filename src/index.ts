@@ -1,22 +1,23 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { exec } = require('child_process');
-const { promisify } = require('util');
-const chalk = require('chalk');
-const ora = require('ora');
-const { saveConfig, loadConfig } = require('./config');
-const { generateDescription } = require('./generators/description');
-const { generateFolderStructure } = require('./generators/structure');
-const { extractFeatures } = require('./generators/features');
-const { detectRoutes } = require('./generators/routes');
-const { getScreenshots } = require('./generators/screenshots');
-const { setupGitHooks } = require('./utils/git');
-const { generateReadmeContent } = require('./utils/template');
-const { calculateChecksum } = require('./utils/file');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import chalk from 'chalk';
+import ora from 'ora';
+import { saveConfig, loadConfig } from './config';
+import { generateDescription } from './generators/description';
+import { generateFolderStructure } from './generators/structure';
+import { extractFeatures } from './generators/features';
+import { detectRoutes } from './generators/routes';
+import { getScreenshots } from './generators/screenshots';
+import { setupGitHooks } from './utils/git';
+import { generateReadmeContent } from './utils/template';
+import { calculateChecksum } from './utils/file';
+import { Config, ProjectInfo, GenerateResult } from './types';
 
 const execAsync = promisify(exec);
 
-async function initializeProject(answers) {
+export async function initializeProject(answers: Partial<Config>): Promise<void> {
   const spinner = ora('Initializing project...').start();
   
   try {
@@ -29,7 +30,8 @@ async function initializeProject(answers) {
     }
     
     // Generate initial README
-    await generateReadme(answers, true);
+    const config = await loadConfig();
+    await generateReadme(config, true);
     
     spinner.succeed('Project initialized successfully!');
   } catch (error) {
@@ -38,7 +40,7 @@ async function initializeProject(answers) {
   }
 }
 
-async function generateReadme(config, force = false) {
+export async function generateReadme(config: Config, force = false): Promise<GenerateResult> {
   const spinner = ora('Generating README...').start();
   
   try {
@@ -77,11 +79,11 @@ async function generateReadme(config, force = false) {
   }
 }
 
-async function gatherProjectInfo(config) {
+async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
   const projectRoot = process.cwd();
   const projectName = config.projectName || path.basename(projectRoot);
   
-  const info = {
+  const info: ProjectInfo = {
     projectName,
     description: config.description || '',
     features: config.features || [],
@@ -93,7 +95,7 @@ async function gatherProjectInfo(config) {
     try {
       info.description = await generateDescription(projectRoot, config.grokApiKey);
     } catch (error) {
-      console.warn(chalk.yellow('⚠️ Failed to generate AI description:', error.message));
+      console.warn(chalk.yellow('⚠️ Failed to generate AI description:', (error as Error).message));
     }
   }
   
@@ -134,14 +136,8 @@ async function gatherProjectInfo(config) {
   return info;
 }
 
-async function updateConfig(newConfig) {
+export async function updateConfig(newConfig: Partial<Config>): Promise<void> {
   const currentConfig = await loadConfig();
   const updatedConfig = { ...currentConfig, ...newConfig };
   await saveConfig(updatedConfig);
 }
-
-module.exports = {
-  initializeProject,
-  generateReadme,
-  updateConfig
-};

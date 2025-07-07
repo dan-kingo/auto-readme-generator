@@ -1,9 +1,10 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { glob } = require('glob');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { glob } from 'glob';
+import { Route, RoutesByMethod } from '../types';
 
-async function detectRoutes(projectRoot) {
-  const routes = [];
+export async function detectRoutes(projectRoot: string): Promise<RoutesByMethod | null> {
+  const routes: Route[] = [];
   
   try {
     // Get all potential route files
@@ -33,13 +34,13 @@ async function detectRoutes(projectRoot) {
 
     return routes.length > 0 ? formatRoutes(routes) : null;
   } catch (error) {
-    console.error('Error detecting routes:', error.message);
+    console.error('Error detecting routes:', (error as Error).message);
     return null;
   }
 }
 
-function extractExpressRoutes(content) {
-  const routes = [];
+function extractExpressRoutes(content: string): Route[] {
+  const routes: Route[] = [];
   
   // Match Express route patterns
   const routeRegex = /(?:app|router)\.(?:get|post|put|delete|patch|use)\s*\(\s*['"`]([^'"`]+)['"`]\s*,?\s*(?:.*?)(?:function|=>|\(req,\s*res\))/g;
@@ -59,8 +60,8 @@ function extractExpressRoutes(content) {
   return routes;
 }
 
-function extractNextRoutes(content, filename) {
-  const routes = [];
+function extractNextRoutes(content: string, filename: string): Route[] {
+  const routes: Route[] = [];
   
   // Extract Next.js API route from filename
   const routePath = filename
@@ -85,8 +86,8 @@ function extractNextRoutes(content, filename) {
   return routes;
 }
 
-function extractOtherRoutes(content) {
-  const routes = [];
+function extractOtherRoutes(content: string): Route[] {
+  const routes: Route[] = [];
   
   // FastAPI routes
   const fastApiRegex = /@app\.(get|post|put|delete|patch)\s*\(\s*['"`]([^'"`]+)['"`]/g;
@@ -103,8 +104,8 @@ function extractOtherRoutes(content) {
   return routes;
 }
 
-function formatRoutes(routes) {
-  const routesByMethod = {};
+function formatRoutes(routes: Route[]): RoutesByMethod {
+  const routesByMethod: RoutesByMethod = {};
   
   routes.forEach(route => {
     if (!routesByMethod[route.method]) {
@@ -115,7 +116,3 @@ function formatRoutes(routes) {
   
   return routesByMethod;
 }
-
-module.exports = {
-  detectRoutes
-};

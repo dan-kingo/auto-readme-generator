@@ -1,9 +1,10 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { glob } = require('glob');
+import * as fs from 'fs-extra';
+import * as path from 'path';
+import { glob } from 'glob';
+import { Screenshot } from '../types';
 
-async function getScreenshots(projectRoot) {
-  const screenshots = [];
+export async function getScreenshots(projectRoot: string): Promise<Screenshot[]> {
+  const screenshots: Screenshot[] = [];
   
   try {
     // Check for screenshots directory
@@ -30,11 +31,7 @@ async function getScreenshots(projectRoot) {
     
     return screenshots;
   } catch (error) {
-    console.error('Error getting screenshots:', error.message);
+    console.error('Error getting screenshots:', (error as Error).message);
     return [];
   }
 }
-
-module.exports = {
-  getScreenshots
-};
