@@ -8,7 +8,7 @@
     "auto-readme": "dist/bin/cli.js"
   },
   "scripts": {
-    "build": "tsc && tsc -p bin/tsconfig.json",
+    "build": "tsc",
     "dev": "ts-node src/index.ts",
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
