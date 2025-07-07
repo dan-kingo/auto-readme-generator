@@ -1,0 +1,101 @@
+const fs = require('fs-extra');
+const path = require('path');
+const { glob } = require('glob');
+
+async function extractFeatures(projectRoot) {
+  const features = [];
+  
+  try {
+    // Get all source files
+    const files = await glob('**/*.{js,ts,jsx,tsx,py,go,rs,java,php}', {
+      cwd: projectRoot,
+      ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**']
+    });
+
+    // Extract features from comments and code
+    for (const file of files) {
+      const filePath = path.join(projectRoot, file);
+      const content = await fs.readFile(filePath, 'utf8');
+      
+      // Extract features from comments
+      const commentFeatures = extractFromComments(content);
+      features.push(...commentFeatures);
+      
+      // Extract features from code structure
+      const codeFeatures = extractFromCode(content, file);
+      features.push(...codeFeatures);
+    }
+
+    // Remove duplicates and format
+    const uniqueFeatures = [...new Set(features)];
+    return uniqueFeatures.length > 0 ? uniqueFeatures : ['Feature extraction in progress...'];
+  } catch (error) {
+    console.error('Error extracting features:', error.message);
+    return ['Error extracting features'];
+  }
+}
+
+function extractFromComments(content) {
+  const features = [];
+  
+  // Look for feature comments
+  const featureRegex = /(?:\/\/|\/\*|\*|#)\s*(?:feature|todo|fixme|note):\s*(.+)/gi;
+  let match;
+  
+  while ((match = featureRegex.exec(content)) !== null) {
+    features.push(match[1].trim());
+  }
+  
+  return features;
+}
+
+function extractFromCode(content, filename) {
+  const features = [];
+  
+  // Detect common patterns
+  if (content.includes('express()') || content.includes('app.listen')) {
+    features.push('REST API server');
+  }
+  
+  if (content.includes('React') || content.includes('jsx')) {
+    features.push('React frontend');
+  }
+  
+  if (content.includes('useState') || content.includes('useEffect')) {
+    features.push('React hooks');
+  }
+  
+  if (content.includes('mongoose') || content.includes('MongoDB')) {
+    features.push('MongoDB database');
+  }
+  
+  if (content.includes('mysql') || content.includes('PostgreSQL')) {
+    features.push('SQL database');
+  }
+  
+  if (content.includes('jwt') || content.includes('passport')) {
+    features.push('Authentication');
+  }
+  
+  if (content.includes('multer') || content.includes('file upload')) {
+    features.push('File upload');
+  }
+  
+  if (content.includes('socket.io') || content.includes('WebSocket')) {
+    features.push('Real-time communication');
+  }
+  
+  if (content.includes('test') || content.includes('jest') || content.includes('mocha')) {
+    features.push('Unit testing');
+  }
+  
+  if (content.includes('docker') || filename.includes('Dockerfile')) {
+    features.push('Docker containerization');
+  }
+  
+  return features;
+}
+
+module.exports = {
+  extractFeatures
+};
