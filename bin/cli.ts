@@ -36,7 +36,7 @@ program
   .action(async () => {
     console.log(chalk.blue('🚀 Initializing Auto README Generator...'));
     
-    const questions: inquirer.QuestionCollection<InitAnswers>[] = [
+    const questions: inquirer.QuestionCollection[] = [
       {
         type: 'input',
         name: 'projectName',
@@ -130,7 +130,7 @@ program
     
     try {
       const config = await loadConfig();
-      const questions: inquirer.QuestionCollection<ConfigAnswers>[] = [
+      const questions: inquirer.QuestionCollection[] = [
         {
           type: 'input',
           name: 'grokApiKey',
