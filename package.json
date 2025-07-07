@@ -8,12 +8,14 @@
     "auto-readme": "dist/bin/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc -p bin/tsconfig.json",
     "dev": "ts-node src/index.ts",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "prepare": "husky install",
-    "postinstall": "npm run build && node dist/setup.js",
+    "postinstall": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
