@@ -3,7 +3,7 @@ import * as path from 'path';
 import { glob } from 'glob';
 import { Route, RoutesByMethod } from '../types';
 
-export async function detectRoutes(projectRoot: string): Promise<RoutesByMethod | null> {
+export async function detectRoutes(projectRoot: string): Promise<RoutesByMethod | undefined> {
   const routes: Route[] = [];
   
   try {
@@ -32,10 +32,10 @@ export async function detectRoutes(projectRoot: string): Promise<RoutesByMethod 
       routes.push(...otherRoutes.map(route => ({ ...route, file })));
     }
 
-    return routes.length > 0 ? formatRoutes(routes) : null;
+    return routes.length > 0 ? formatRoutes(routes) : undefined;
   } catch (error) {
     console.error('Error detecting routes:', (error as Error).message);
-    return null;
+    return undefined;
   }
 }
 

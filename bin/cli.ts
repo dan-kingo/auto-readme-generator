@@ -36,7 +36,7 @@ program
   .action(async () => {
     console.log(chalk.blue('🚀 Initializing Auto README Generator...'));
     
-    const questions: inquirer.QuestionCollection<InitAnswers> = [
+    const questions: inquirer.QuestionCollection[] = [
       {
         type: 'input',
         name: 'projectName',
@@ -59,8 +59,8 @@ program
         type: 'input',
         name: 'grokApiKey',
         message: 'Grok API key (required for AI features):',
-        when: (answers) => answers.useAI,
-        validate: (input) => input.length > 0 || 'API key is required for AI features'
+        when: (answers: any) => answers.useAI,
+        validate: (input: string) => input.length > 0 || 'API key is required for AI features'
       },
       {
         type: 'checkbox',
@@ -91,7 +91,7 @@ program
     ];
 
     try {
-      const answers = await inquirer.prompt(questions);
+      const answers = await inquirer.prompt<InitAnswers>(questions);
       await initializeProject(answers);
       console.log(chalk.green('✅ Auto README Generator initialized successfully!'));
     } catch (error) {
@@ -130,7 +130,7 @@ program
     
     try {
       const config = await loadConfig();
-      const questions: inquirer.QuestionCollection<ConfigAnswers> = [
+      const questions: inquirer.QuestionCollection[] = [
         {
           type: 'input',
           name: 'grokApiKey',
@@ -151,7 +151,7 @@ program
         }
       ];
 
-      const answers = await inquirer.prompt(questions);
+      const answers = await inquirer.prompt<ConfigAnswers>(questions);
       await updateConfig(answers);
       console.log(chalk.green('✅ Configuration updated successfully!'));
     } catch (error) {
