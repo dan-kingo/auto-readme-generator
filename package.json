@@ -1,12 +1,36 @@
 {
-  "name": "@dan-kingo/auto-readme-generator",
+  "name": "dan-readme-generator",
   "version": "1.0.0",
   "description": "Automatically generate and update README.md files with AI-powered descriptions, folder structure, and feature extraction",
+  "keywords": [
+    "readme",
+    "generator",
+    "documentation",
+    "ai",
+    "git-hooks",
+    "automation"
+  ],
+  "homepage": "https://github.com/dan-kingo/auto-readme-generator#readme",
+  "bugs": {
+    "url": "https://github.com/dan-kingo/auto-readme-generator/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dan-kingo/auto-readme-generator.git"
+  },
+  "license": "MIT",
+  "author": "Dan-Kingo danieldejen23@gmail.com",
+  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
     "dan-readme": "dist/bin/cli.js"
   },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/index.ts",
@@ -18,16 +42,6 @@
     "postinstall": "npm run build",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [
-    "readme",
-    "generator",
-    "documentation",
-    "ai",
-    "git-hooks",
-    "automation"
-  ],
-  "author": "Dan-Kingo danieldejen23@gmail.com",
-  "license": "MIT",
   "dependencies": {
     "axios": "^1.6.0",
     "chalk": "^4.1.2",
@@ -53,18 +67,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dan-kingo/auto-readme-generator.git"
-  },
-  "bugs": {
-    "url": "https://github.com/dan-kingo/auto-readme-generator/issues"
-  },
-  "homepage": "https://github.com/dan-kingo/auto-readme-generator#readme",
-  "files": [
-    "dist/",
-    "README.md",
-    "LICENSE"
-  ]
+  }
 }
