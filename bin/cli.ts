@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import inquirer from 'inquirer';
+import inquirer, { QuestionCollection } from 'inquirer';
 import { initializeProject, generateReadme, updateConfig } from '../src/index';
 import { loadConfig } from '../src/config';
 import * as packageJson from '../package.json';
@@ -36,7 +36,7 @@ program
   .action(async () => {
     console.log(chalk.blue('🚀 Initializing Auto README Generator...'));
     
-    const questions: inquirer.QuestionCollection[] = [
+   const questions: QuestionCollection[] = [
       {
         type: 'input',
         name: 'projectName',
@@ -130,7 +130,7 @@ program
     
     try {
       const config = await loadConfig();
-      const questions: inquirer.QuestionCollection[] = [
+      const questions: QuestionCollection[] = [
         {
           type: 'input',
           name: 'grokApiKey',
