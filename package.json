@@ -1,6 +1,6 @@
 {
   "name": "dan-readme-generator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Automatically generate and update README.md files with AI-powered descriptions, folder structure, and feature extraction",
   "keywords": [
     "readme",
