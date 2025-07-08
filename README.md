@@ -1,4 +1,4 @@
-# Auto README Generator
+# Dan's Auto README Generator
 
 An intelligent npm package that automatically generates and updates README.md files using AI-powered descriptions, folder structure scanning, and feature extraction from your codebase.
 
@@ -19,12 +19,12 @@ An intelligent npm package that automatically generates and updates README.md fi
 
 ### Global Installation (Recommended)
 ```bash
-npm install -g auto-readme-generator
+npm install -g @dan-kingo/auto-readme-generator
 ```
 
 ### Local Installation
 ```bash
-npm install --save-dev auto-readme-generator
+npm install --save-dev @dan-kingo/auto-readme-generator
 ```
 
 ## 🚀 Quick Start
@@ -36,17 +36,17 @@ cd your-project
 
 2. **Initialize Auto README Generator:**
 ```bash
-auto-readme init
+dan-readme init
 ```
 
 3. **Generate your README:**
 ```bash
-auto-readme generate
+dan-readme generate
 ```
 
 ## 📖 CLI Commands
 
-### `auto-readme init`
+### `dan-readme init`
 Initialize the package in your project with interactive setup.
 
 **Features:**
@@ -55,7 +55,7 @@ Initialize the package in your project with interactive setup.
 - Feature selection
 - Git hooks configuration
 
-### `auto-readme generate`
+### `dan-readme generate`
 Generate or update the README.md file.
 
 **Options:**
@@ -63,10 +63,10 @@ Generate or update the README.md file.
 
 **Example:**
 ```bash
-auto-readme generate --force
+dan-readme generate --force
 ```
 
-### `auto-readme config`
+### `dan-readme config`
 Update configuration settings interactively.
 
 ## ⚙️ Configuration
@@ -143,7 +143,7 @@ The package automatically sets up git hooks to update your README on commits:
 
 ```bash
 # Pre-commit hook automatically runs:
-auto-readme generate
+dan-readme generate
 git add README.md
 ```
 
@@ -153,7 +153,7 @@ If automatic setup fails, you can manually create the hook:
 ```bash
 # Create pre-commit hook
 echo '#!/bin/sh
-auto-readme generate
+dan-readme generate
 git add README.md' > .git/hooks/pre-commit
 
 # Make it executable
@@ -171,7 +171,7 @@ chmod +x .git/hooks/pre-commit
 
 2. **Configure the key:**
    ```bash
-   auto-readme config
+   dan-readme config
    ```
    Or manually add to `.autoreadme.json`:
    ```json
@@ -304,7 +304,7 @@ npm run build
 npm link
 
 # Test the CLI
-auto-readme --help
+dan-readme --help
 ```
 
 ### Testing
@@ -360,16 +360,16 @@ We welcome contributions! Here's how you can help:
 **Issue: "Command not found: auto-readme"**
 ```bash
 # Solution: Install globally
-npm install -g auto-readme-generator
+npm install -g @dan-kingo/auto-readme-generator
 
 # Or use npx
-npx auto-readme-generator init
+npx @dan-kingo/auto-readme-generator init
 ```
 
 **Issue: "API key invalid"**
 ```bash
 # Solution: Update your Grok API key
-auto-readme config
+dan-readme config
 ```
 
 **Issue: "Git hooks not working"**
@@ -381,13 +381,13 @@ chmod +x .git/hooks/pre-commit
 **Issue: "Permission denied"**
 ```bash
 # Solution: Fix file permissions
-sudo chmod +x /usr/local/bin/auto-readme
+sudo chmod +x /usr/local/bin/dan-readme
 ```
 
 ### Debug Mode
 ```bash
 # Enable verbose logging
-DEBUG=auto-readme* auto-readme generate
+DEBUG=dan-readme* dan-readme generate
 ```
 
 ## 📄 License

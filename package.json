@@ -1,11 +1,11 @@
 {
-  "name": "auto-readme-generator",
+  "name": "@dan-kingo/auto-readme-generator",
   "version": "1.0.0",
   "description": "Automatically generate and update README.md files with AI-powered descriptions, folder structure, and feature extraction",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "auto-readme": "dist/bin/cli.js"
+    "dan-readme": "dist/bin/cli.js"
   },
   "scripts": {
     "build": "tsc",

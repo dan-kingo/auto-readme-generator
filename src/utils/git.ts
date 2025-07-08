@@ -14,7 +14,7 @@ export async function setupGitHooks(): Promise<void> {
     const hookPath = path.join(process.cwd(), '.git', 'hooks', 'pre-commit');
     const hookContent = `#!/bin/sh
 # Auto README Generator pre-commit hook
-npx auto-readme generate
+npx dan-readme generate
 git add README.md
 `;
     
