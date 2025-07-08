@@ -353,42 +353,6 @@ We welcome contributions! Here's how you can help:
 - [ ] **Web Dashboard** - Online configuration
 - [ ] **Team Collaboration** - Shared configurations
 
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Issue: "Command not found: auto-readme"**
-```bash
-# Solution: Install globally
-npm install -g @dan-kingo/auto-readme-generator
-
-# Or use npx
-npx @dan-kingo/auto-readme-generator init
-```
-
-**Issue: "API key invalid"**
-```bash
-# Solution: Update your Grok API key
-dan-readme config
-```
-
-**Issue: "Git hooks not working"**
-```bash
-# Solution: Manually setup git hooks
-chmod +x .git/hooks/pre-commit
-```
-
-**Issue: "Permission denied"**
-```bash
-# Solution: Fix file permissions
-sudo chmod +x /usr/local/bin/dan-readme
-```
-
-### Debug Mode
-```bash
-# Enable verbose logging
-DEBUG=dan-readme* dan-readme generate
-```
 
 ## 📄 License
 
