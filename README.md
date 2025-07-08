@@ -19,12 +19,12 @@ An intelligent npm package that automatically generates and updates README.md fi
 
 ### Global Installation (Recommended)
 ```bash
-npm install -g @dan-kingo/auto-readme-generator
+npm install -g dan-readme-generator
 ```
 
 ### Local Installation
 ```bash
-npm install --save-dev @dan-kingo/auto-readme-generator
+npm install --save-dev dan-readme-generator
 ```
 
 ## 🚀 Quick Start
