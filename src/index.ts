@@ -7,9 +7,8 @@ import ora from 'ora';
 import { saveConfig, loadConfig } from './config';
 import { generateDescription } from './generators/description';
 import { generateFolderStructure } from './generators/structure';
-import { extractFeatures } from './generators/features';
-import { detectRoutes } from './generators/routes';
 import { getScreenshots } from './generators/screenshots';
+import { analyzeProjectStructure } from './generators/projectAnalyzer';
 import { setupGitHooks } from './utils/git';
 import { generateReadmeContent } from './utils/template';
 import { calculateChecksum } from './utils/file';
@@ -87,7 +86,8 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
     projectName,
     description: config.description || '',
     features: config.features || [],
-    license: config.license || 'MIT'
+    license: config.license || 'MIT',
+    projectStructure: undefined
   };
   
   // Generate AI description if enabled and no manual description
@@ -104,14 +104,9 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
     info.folderStructure = await generateFolderStructure(projectRoot);
   }
   
-  // Extract features
-  if (config.features.includes('featureExtraction')) {
-    info.extractedFeatures = await extractFeatures(projectRoot);
-  }
-  
-  // Detect API routes
-  if (config.features.includes('apiRoutes')) {
-    info.apiRoutes = await detectRoutes(projectRoot);
+  // Analyze project structure
+  if (config.features.includes('featureExtraction') || config.features.includes('apiRoutes')) {
+    info.projectStructure = await analyzeProjectStructure(projectRoot);
   }
   
   // Get screenshots

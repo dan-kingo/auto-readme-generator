@@ -15,8 +15,7 @@ export interface ProjectInfo {
   features: string[];
   license: string;
   folderStructure?: string;
-  extractedFeatures?: string[];
-  apiRoutes?: RoutesByMethod;
+  projectStructure?: ProjectStructure;
   screenshots?: Screenshot[];
   packageInfo?: PackageInfo;
   gitUrl?: string;
@@ -59,4 +58,25 @@ export interface ProjectAnalysis {
 
 export interface GenerateResult {
   updated: boolean;
+}
+
+export interface ProjectStructure {
+  type: string;
+  applications: ApplicationInfo[];
+  mainTechnologies: string[];
+  hasBackend: boolean;
+  hasFrontend: boolean;
+  hasMobile: boolean;
+  databases: string[];
+  deploymentInfo: any;
+}
+
+export interface ApplicationInfo {
+  name: string;
+  type: 'backend' | 'frontend' | 'mobile' | 'admin' | 'provider' | 'user' | 'docs' | 'main';
+  path: string;
+  framework: string;
+  features: string[];
+  description: string;
+  packageInfo?: PackageInfo;
 }
