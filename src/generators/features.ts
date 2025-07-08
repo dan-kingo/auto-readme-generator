@@ -9,21 +9,35 @@ export async function extractFeatures(projectRoot: string): Promise<string[]> {
     // Get all source files
     const files = await glob('**/*.{js,ts,jsx,tsx,py,go,rs,java,php}', {
       cwd: projectRoot,
-      ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**']
+      ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**'],
+      nodir: true // Only return files, not directories
     });
 
     // Extract features from comments and code
     for (const file of files) {
       const filePath = path.join(projectRoot, file);
-      const content = await fs.readFile(filePath, 'utf8');
       
-      // Extract features from comments
-      const commentFeatures = extractFromComments(content);
-      features.push(...commentFeatures);
-      
-      // Extract features from code structure
-      const codeFeatures = extractFromCode(content, file);
-      features.push(...codeFeatures);
+      try {
+        // Check if it's actually a file before reading
+        const stats = await fs.stat(filePath);
+        if (!stats.isFile()) {
+          continue;
+        }
+        
+        const content = await fs.readFile(filePath, 'utf8');
+        
+        // Extract features from comments
+        const commentFeatures = extractFromComments(content);
+        features.push(...commentFeatures);
+        
+        // Extract features from code structure
+        const codeFeatures = extractFromCode(content, file);
+        features.push(...codeFeatures);
+      } catch (error) {
+        // Skip files that can't be read
+        console.warn(`Skipping file ${file}: ${(error as Error).message}`);
+        continue;
+      }
     }
 
     // Remove duplicates and format

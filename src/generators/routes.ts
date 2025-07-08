@@ -10,26 +10,40 @@ export async function detectRoutes(projectRoot: string): Promise<RoutesByMethod 
     // Get all potential route files
     const files = await glob('**/*.{js,ts,jsx,tsx}', {
       cwd: projectRoot,
-      ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**']
+      ignore: ['node_modules/**', '.git/**', 'dist/**', 'build/**'],
+      nodir: true // Only return files, not directories
     });
 
     for (const file of files) {
       const filePath = path.join(projectRoot, file);
-      const content = await fs.readFile(filePath, 'utf8');
       
-      // Extract Express routes
-      const expressRoutes = extractExpressRoutes(content);
-      routes.push(...expressRoutes.map(route => ({ ...route, file })));
-      
-      // Extract Next.js API routes
-      if (file.includes('pages/api/') || file.includes('app/api/')) {
-        const nextRoutes = extractNextRoutes(content, file);
-        routes.push(...nextRoutes.map(route => ({ ...route, file })));
+      try {
+        // Check if it's actually a file before reading
+        const stats = await fs.stat(filePath);
+        if (!stats.isFile()) {
+          continue;
+        }
+        
+        const content = await fs.readFile(filePath, 'utf8');
+        
+        // Extract Express routes
+        const expressRoutes = extractExpressRoutes(content);
+        routes.push(...expressRoutes.map(route => ({ ...route, file })));
+        
+        // Extract Next.js API routes
+        if (file.includes('pages/api/') || file.includes('app/api/')) {
+          const nextRoutes = extractNextRoutes(content, file);
+          routes.push(...nextRoutes.map(route => ({ ...route, file })));
+        }
+        
+        // Extract other framework routes
+        const otherRoutes = extractOtherRoutes(content);
+        routes.push(...otherRoutes.map(route => ({ ...route, file })));
+      } catch (error) {
+        // Skip files that can't be read
+        console.warn(`Skipping file ${file}: ${(error as Error).message}`);
+        continue;
       }
-      
-      // Extract other framework routes
-      const otherRoutes = extractOtherRoutes(content);
-      routes.push(...otherRoutes.map(route => ({ ...route, file })));
     }
 
     return routes.length > 0 ? formatRoutes(routes) : undefined;

@@ -23,11 +23,25 @@ export async function generateFolderStructure(projectRoot: string): Promise<stri
         '.DS_Store',
         'Thumbs.db'
       ],
-      dot: true
+      dot: true,
+      nodir: false // Include directories in the listing
+    });
+
+    // Filter out node_modules and other unwanted directories
+    const filteredFiles = files.filter(file => {
+      const parts = file.split(path.sep);
+      return !parts.some(part => 
+        part === 'node_modules' || 
+        part === '.git' || 
+        part === 'dist' || 
+        part === 'build' ||
+        part === '.next' ||
+        part === 'coverage'
+      );
     });
 
     // Build tree structure
-    const tree = buildTree(files);
+    const tree = buildTree(filteredFiles);
     
     // Convert tree to readable format
     return formatTree(tree);
