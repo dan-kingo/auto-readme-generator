@@ -513,7 +513,6 @@ function getFileDescription(filename: string, isDirectory: boolean): string {
       '.tif': '                   # TIFF image file',
       '.ico': '                   # Icon file',
       '.icns': '                  # macOS icon file',
-      '.svg': '                   # Scalable Vector Graphics',
       '.mp4': '                   # MP4 video file',
       '.avi': '                   # AVI video file',
       '.mov': '                   # QuickTime video file',
