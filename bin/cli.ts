@@ -52,15 +52,8 @@ program
       {
         type: 'confirm',
         name: 'useAI',
-        message: 'Use AI for description generation?',
-        default: true
-      },
-      {
-        type: 'input',
-        name: 'grokApiKey',
-        message: 'Grok API key (required for AI features):',
-        when: (answers: any) => answers.useAI,
-        validate: (input: string) => input.length > 0 || 'API key is required for AI features'
+        message: 'Use AI for description generation? (requires GITHUB_TOKEN env var)',
+        default: !!process.env.GITHUB_TOKEN
       },
       {
         type: 'checkbox',
@@ -132,16 +125,10 @@ program
       const config = await loadConfig();
       const questions: QuestionCollection[] = [
         {
-          type: 'input',
-          name: 'grokApiKey',
-          message: 'Grok API key:',
-          default: config.grokApiKey || ''
-        },
-        {
           type: 'confirm',
           name: 'useAI',
-          message: 'Use AI for description generation?',
-          default: config.useAI || true
+          message: 'Use AI for description generation? (requires GITHUB_TOKEN env var)',
+          default: config.useAI && !!process.env.GITHUB_TOKEN
         },
         {
           type: 'confirm',

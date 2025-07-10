@@ -29,8 +29,8 @@ export function getDefaultConfig(): Config {
   return {
     projectName: '',
     description: '',
-    useAI: true,
-    grokApiKey: '',
+    useAI: false,
+    grokApiKey: process.env.GITHUB_TOKEN || '',
     features: [
       'folderStructure',
       'featureExtraction',

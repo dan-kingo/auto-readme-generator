@@ -3,8 +3,13 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { ProjectAnalysis } from '../types';
 
-export async function generateDescription(projectRoot: string, apiKey: string): Promise<string> {
+export async function generateDescription(projectRoot: string, githubToken?: string): Promise<string> {
   try {
+    // Use GitHub token if available, otherwise skip AI generation
+    if (!githubToken) {
+      return 'A modern application built with cutting-edge technologies.';
+    }
+
     // Analyze project files to understand what it does
     const projectInfo = await analyzeProject(projectRoot);
     
@@ -21,6 +26,7 @@ Dependencies: ${projectInfo.dependencies.slice(0, 10).join(', ')}
 Generate a professional description that explains what this project does and its main purpose.
 `;
 
+    // Use GitHub token to access Grok API
     const response = await axios.post('https://api.x.ai/v1/chat/completions', {
       model: 'grok-beta',
       messages: [
@@ -37,7 +43,7 @@ Generate a professional description that explains what this project does and its
       temperature: 0.7
     }, {
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${githubToken}`,
         'Content-Type': 'application/json'
       }
     });

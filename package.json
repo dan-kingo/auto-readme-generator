@@ -21,8 +21,8 @@
   "license": "MIT",
   "author": "Dan-Kingo danieldejen23@gmail.com",
   "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "bin": {
     "dan-readme": "dist/bin/cli.js"
   },
@@ -39,7 +39,6 @@
     "test": "jest",
     "lint": "eslint src/**/*.ts",
     "prepare": "husky install",
-    "postinstall": "npm run build",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

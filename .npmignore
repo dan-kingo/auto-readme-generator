@@ -36,3 +36,11 @@ Thumbs.db
 # Documentation source
 docs/
 examples/
+
+# Source files (only include compiled dist)
+src/
+bin/*.ts
+tsconfig.json
+
+# Build artifacts
+*.tsbuildinfo

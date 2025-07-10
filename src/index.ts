@@ -91,9 +91,10 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
   };
   
   // Generate AI description if enabled and no manual description
-  if (config.useAI && !config.description && config.grokApiKey) {
+  const githubToken = process.env.GITHUB_TOKEN || config.grokApiKey;
+  if (config.useAI && !config.description && githubToken) {
     try {
-      info.description = await generateDescription(projectRoot, config.grokApiKey);
+      info.description = await generateDescription(projectRoot, githubToken);
     } catch (error) {
       console.warn(chalk.yellow('⚠️ Failed to generate AI description:', (error as Error).message));
     }

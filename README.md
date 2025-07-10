@@ -162,23 +162,19 @@ chmod +x .git/hooks/pre-commit
 
 ## 🤖 AI Integration
 
-### Grok AI Setup
+### AI Features with GitHub Token
 
-1. **Get your API key:**
-   - Visit [X AI Platform](https://x.ai)
-   - Create an account or sign in
-   - Generate an API key
+The package uses your GitHub token to access Grok AI for intelligent README generation.
 
-2. **Configure the key:**
+1. **Set your GitHub token:**
    ```bash
-   dan-readme config
+   export GITHUB_TOKEN=your_github_token_here
    ```
-   Or manually add to `.autoreadme.json`:
-   ```json
-   {
-     "grokApiKey": "your-api-key-here",
-     "useAI": true
-   }
+
+2. **Enable AI features:**
+   ```bash
+   dan-readme init
+   # Select "Yes" for AI description generation
    ```
 
 ### AI Features
@@ -186,6 +182,7 @@ chmod +x .git/hooks/pre-commit
 - **Contextual Descriptions** - Generates relevant project descriptions
 - **Framework Detection** - Identifies React, Vue, Express, etc.
 - **Language Support** - Works with any programming language
+- **GitHub Integration** - Uses your existing GitHub token
 
 ## 📂 File Structure
 
