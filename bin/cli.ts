@@ -52,7 +52,7 @@ program
       {
         type: 'confirm',
         name: 'useAI',
-        message: 'Use AI for description generation? (requires GITHUB_TOKEN env var)',
+        message: 'Use AI for description generation? (optional - requires GITHUB_TOKEN)',
         default: !!process.env.GITHUB_TOKEN
       },
       {

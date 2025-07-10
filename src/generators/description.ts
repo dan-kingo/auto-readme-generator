@@ -5,9 +5,10 @@ import { ProjectAnalysis } from '../types';
 
 export async function generateDescription(projectRoot: string, githubToken?: string): Promise<string> {
   try {
-    // Use GitHub token if available, otherwise skip AI generation
+    // Check if GitHub token is available
     if (!githubToken) {
-      return 'A modern application built with cutting-edge technologies.';
+      console.log('ℹ️ No GitHub token found - skipping AI description generation');
+      return '';
     }
 
     // Analyze project files to understand what it does

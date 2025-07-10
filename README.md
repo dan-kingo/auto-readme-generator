@@ -162,19 +162,31 @@ chmod +x .git/hooks/pre-commit
 
 ## 🤖 AI Integration
 
-### AI Features with GitHub Token
+### AI Features (Optional Enhancement)
 
-The package uses your GitHub token to access Grok AI for intelligent README generation.
+The package works perfectly without any tokens, but you can enhance it with AI features using your GitHub token.
 
-1. **Set your GitHub token:**
+**Without GitHub Token:**
+- ✅ All core features work
+- ✅ Manual project descriptions
+- ✅ Automatic feature extraction
+- ✅ Complete README generation
+
+**With GitHub Token (Enhanced):**
+- ✅ Everything above PLUS
+- ✅ AI-powered project descriptions
+- ✅ Intelligent content analysis
+
+**To enable AI features:**
+1. **Set your GitHub token (optional):**
    ```bash
    export GITHUB_TOKEN=your_github_token_here
    ```
 
-2. **Enable AI features:**
+2. **Initialize with AI enabled:**
    ```bash
    dan-readme init
-   # Select "Yes" for AI description generation
+   # Select "Yes" for AI description generation (if token available)
    ```
 
 ### AI Features

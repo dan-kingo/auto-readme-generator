@@ -96,8 +96,15 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
     try {
       info.description = await generateDescription(projectRoot, githubToken);
     } catch (error) {
-      console.warn(chalk.yellow('⚠️ Failed to generate AI description:', (error as Error).message));
+      console.warn(chalk.yellow('⚠️ AI description unavailable, using manual description'));
+      // If no manual description provided, use a generic one
+      if (!info.description) {
+        info.description = 'A modern application built with cutting-edge technologies.';
+      }
     }
+  } else if (!info.description) {
+    // No AI and no manual description - use generic
+    info.description = 'A modern application built with cutting-edge technologies.';
   }
   
   // Generate folder structure
