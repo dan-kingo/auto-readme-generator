@@ -162,16 +162,33 @@ chmod +x .git/hooks/pre-commit
 
 ## 🤖 AI Integration
 
-### AI Features (Built-in Enhancement)
+### AI Features Setup
 
-The package includes built-in AI features powered by Grok AI for enhanced project analysis and description generation.
+The package includes AI features powered by Grok AI for enhanced project analysis and description generation.
 
-**AI-Enhanced Features:**
-- ✅ AI-powered project descriptions
-- ✅ Intelligent content analysis
-- ✅ Smart technology detection
-- ✅ Contextual feature extraction
-- ✅ Professional documentation generation
+**Setup (Optional):**
+```bash
+# Set your GitHub token as environment variable
+export GITHUB_TOKEN=your_github_token_here
+
+# Or add to your shell profile (.bashrc, .zshrc, etc.)
+echo 'export GITHUB_TOKEN=your_github_token_here' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**AI-Enhanced Features (when token is available):**
+- 🤖 AI-powered project descriptions
+- 🧠 Intelligent content analysis
+- 🔍 Smart technology detection
+- ⚡ Contextual feature extraction
+- 📝 Professional documentation generation
+
+**Without Token:**
+- ✅ All core features still work
+- ✅ Manual descriptions supported
+- ✅ Folder structure generation
+- ✅ Feature extraction from code
+- ✅ API route detection
 
 ### AI Features
 

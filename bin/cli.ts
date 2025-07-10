@@ -127,8 +127,8 @@ program
         {
           type: 'confirm',
           name: 'useAI',
-          message: 'Use AI for description generation? (requires GITHUB_TOKEN env var)',
-          default: config.useAI && !!process.env.GITHUB_TOKEN
+          message: 'Use AI for enhanced description generation? (requires GITHUB_TOKEN env var)',
+          default: !!process.env.GITHUB_TOKEN
         },
         {
           type: 'confirm',

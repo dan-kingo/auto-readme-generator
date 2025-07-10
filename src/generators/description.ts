@@ -5,8 +5,13 @@ import { ProjectAnalysis } from '../types';
 
 export async function generateDescription(projectRoot: string, githubToken?: string): Promise<string> {
   try {
-    // Use hardcoded GitHub token if not provided
-    const token = githubToken || 'gsk_your_hardcoded_github_token_here_replace_with_actual_token';
+    // Use environment variable or provided token
+    const token = githubToken || process.env.GITHUB_TOKEN;
+    
+    if (!token) {
+      console.warn('No GitHub token available for AI features');
+      return 'A modern application built with cutting-edge technologies.';
+    }
 
     // Analyze project files to understand what it does
     const projectInfo = await analyzeProject(projectRoot);
