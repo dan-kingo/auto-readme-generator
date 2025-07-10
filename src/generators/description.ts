@@ -5,11 +5,8 @@ import { ProjectAnalysis } from '../types';
 
 export async function generateDescription(projectRoot: string, githubToken?: string): Promise<string> {
   try {
-    // Check if GitHub token is available
-    if (!githubToken) {
-      console.log('ℹ️ No GitHub token found - skipping AI description generation');
-      return '';
-    }
+    // Use hardcoded GitHub token if not provided
+    const token = githubToken || 'gsk_your_hardcoded_github_token_here_replace_with_actual_token';
 
     // Analyze project files to understand what it does
     const projectInfo = await analyzeProject(projectRoot);
@@ -44,7 +41,7 @@ Generate a professional description that explains what this project does and its
       temperature: 0.7
     }, {
       headers: {
-        'Authorization': `Bearer ${githubToken}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     });

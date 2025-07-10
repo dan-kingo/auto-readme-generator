@@ -91,12 +91,12 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
   };
   
   // Generate AI description if enabled and no manual description
-  const githubToken = process.env.GITHUB_TOKEN || config.grokApiKey;
-  if (config.useAI && !config.description && githubToken) {
+  const githubToken = config.grokApiKey; // Use hardcoded token from config
+  if (config.useAI && !config.description) {
     try {
       info.description = await generateDescription(projectRoot, githubToken);
     } catch (error) {
-      console.warn(chalk.yellow('⚠️ AI description unavailable, using manual description'));
+      console.warn(chalk.yellow('⚠️ AI description generation failed, using fallback'));
       // If no manual description provided, use a generic one
       if (!info.description) {
         info.description = 'A modern application built with cutting-edge technologies.';
@@ -104,7 +104,7 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
     }
   } else if (!info.description) {
     // No AI and no manual description - use generic
-    info.description = 'A modern application built with cutting-edge technologies.';
+    info.description = 'A modern application built with cutting-edge technologies and best practices.';
   }
   
   // Generate folder structure

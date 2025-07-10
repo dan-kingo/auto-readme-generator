@@ -52,8 +52,8 @@ program
       {
         type: 'confirm',
         name: 'useAI',
-        message: 'Use AI for description generation? (optional - requires GITHUB_TOKEN)',
-        default: !!process.env.GITHUB_TOKEN
+        message: 'Use AI for enhanced description generation?',
+        default: true
       },
       {
         type: 'checkbox',

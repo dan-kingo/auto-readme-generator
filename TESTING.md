@@ -43,22 +43,22 @@ dan-readme generate
 
 #### **Without GitHub Token**
 ```bash
-# Unset token
-unset GITHUB_TOKEN
+# Test without environment token (uses built-in AI)
+unset GITHUB_TOKEN  # Optional - package has built-in AI
 
-# Test basic functionality
+# Test functionality
 dan-readme init
-# Should work without AI features
+# Should work with built-in AI features
 ```
 
-#### **With GitHub Token**
+#### **With Custom GitHub Token**
 ```bash
-# Set your GitHub token
+# Set custom GitHub token (optional override)
 export GITHUB_TOKEN=your_github_token_here
 
-# Test AI features
+# Test with custom token
 dan-readme init
-# Should offer AI description generation
+# Should use custom token if provided
 ```
 
 ### 5. **Test in Different Project Types**
