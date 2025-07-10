@@ -28,7 +28,7 @@ This should display your NPM username.
 
 ### 3. Check Package Name Availability
 ```bash
-npm search @dan-kingo/auto-readme-generator
+npm search dan-readme-generator
 ```
 If the name is taken, update the `name` field in `package.json`.
 
@@ -76,10 +76,10 @@ npm publish
 ### 8. Verify Publication
 ```bash
 # Check if package is available
-npm view @dan-kingo/auto-readme-generator
+npm view dan-readme-generator
 
 # Test installation
-npm install -g @dan-kingo/auto-readme-generator
+npm install -g dan-readme-generator
 dan-readme --version
 ```
 
@@ -106,17 +106,12 @@ npm publish
 npm publish --tag beta
 
 # Install beta version
-npm install -g @dan-kingo/auto-readme-generator@beta
+npm install -g dan-readme-generator@beta
 ```
 
 ## Important Notes
 
-1. **Package Name**: Must be unique on NPM. Consider scoped packages if name is taken:
-   ```json
-   {
-     "name": "@dan-kingo/auto-readme-generator"
-   }
-   ```
+1. **Package Name**: `dan-readme-generator` - ensure it's available on NPM
 
 2. **Semantic Versioning**: Follow semver (major.minor.patch)
    - Major: Breaking changes
@@ -139,7 +134,7 @@ npm install -g @dan-kingo/auto-readme-generator@beta
 
 ### Unpublishing (within 24 hours):
 ```bash
-npm unpublish @dan-kingo/auto-readme-generator@1.0.0
+npm unpublish dan-readme-generator@1.0.0
 ```
 
 **Warning**: Unpublishing is discouraged and only possible within 24 hours for versions with no dependents.

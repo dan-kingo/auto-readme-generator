@@ -27,7 +27,7 @@ interface ConfigAnswers {
 
 program
   .name('dan-readme')
-  .description('Automatically generate and update README.md files')
+  .description('Automatically generate and update README.md files with AI-powered descriptions')
   .version(packageJson.version);
 
 program

@@ -37,9 +37,14 @@
     "clean": "rm -rf dist",
     "prebuild": "npm run clean",
     "test": "jest",
+    "test:local": "npm run build && npm link && echo 'Package linked locally. Test with: dan-readme --help'",
+    "unlink": "npm unlink -g dan-readme-generator",
     "lint": "eslint src/**/*.ts",
     "prepare": "husky install",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "publish:patch": "npm version patch && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:major": "npm version major && npm publish"
   },
   "dependencies": {
     "axios": "^1.6.0",
