@@ -2,7 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { glob } from 'glob';
 
-export async function extractFeatures(projectRoot: string): Promise<string[]> {
+export async function extractFeatures(projectRoot: string, useAI: boolean = false): Promise<string[]> {
   const features: string[] = [];
   
   try {
@@ -49,6 +49,11 @@ export async function extractFeatures(projectRoot: string): Promise<string[]> {
     const structuralFeatures = await analyzeProjectStructure(projectRoot);
     features.push(...structuralFeatures);
 
+    // Use AI to enhance feature descriptions if enabled
+    if (useAI && process.env.GITHUB_TOKEN) {
+      return await enhanceFeaturesWithAI(features, projectRoot);
+    }
+
     // Remove duplicates and clean up
     const uniqueFeatures = [...new Set(features)]
       .filter(feature => feature.length > 3) // Remove very short features
@@ -61,6 +66,73 @@ export async function extractFeatures(projectRoot: string): Promise<string[]> {
   }
 }
 
+async function enhanceFeaturesWithAI(rawFeatures: string[], projectRoot: string): Promise<string[]> {
+  try {
+    const token = process.env.GITHUB_TOKEN;
+    if (!token) return rawFeatures;
+
+    // Analyze project for context
+    const packagePath = path.join(projectRoot, 'package.json');
+    let projectContext = '';
+    
+    if (await fs.pathExists(packagePath)) {
+      const pkg = await fs.readJson(packagePath);
+      projectContext = `
+Project: ${pkg.name || 'Unknown'}
+Dependencies: ${Object.keys(pkg.dependencies || {}).slice(0, 10).join(', ')}
+Scripts: ${Object.keys(pkg.scripts || {}).join(', ')}
+`;
+    }
+
+    const prompt = `
+You are a technical expert analyzing a software project. Based on the raw features extracted from code analysis and project context, create a refined list of 5-8 key features that best represent what this application offers to users.
+
+Project Context:
+${projectContext}
+
+Raw Features Found:
+${rawFeatures.join('\n- ')}
+
+Instructions:
+1. Combine similar features into comprehensive descriptions
+2. Focus on user-facing functionality and benefits
+3. Use clear, professional language
+4. Prioritize the most important features
+5. Make each feature sound valuable and specific
+6. Return only the feature list, one per line, without bullets or numbers
+
+Example good features:
+- User authentication and secure login system
+- Real-time data synchronization and updates
+- Responsive design for mobile and desktop
+- Advanced search and filtering capabilities
+- File upload and cloud storage integration
+`;
+
+    const response = await axios.post('https://models.inference.ai.azure.com/chat/completions', {
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 300,
+      temperature: 0.3
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const enhancedFeatures = response.data.choices[0].message.content
+      .trim()
+      .split('\n')
+      .map((f: string) => f.replace(/^[-*•]\s*/, '').trim())
+      .filter((f: string) => f.length > 10);
+
+    return enhancedFeatures.length > 0 ? enhancedFeatures : rawFeatures;
+  } catch (error) {
+    console.error('Error enhancing features with AI:', (error as Error).message);
+    return rawFeatures;
+  }
+}
 function extractFromComments(content: string): string[] {
   const features: string[] = [];
   

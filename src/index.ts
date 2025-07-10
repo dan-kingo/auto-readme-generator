@@ -91,10 +91,9 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
   };
   
   // Generate AI description if enabled and no manual description
-  const githubToken = process.env.GITHUB_TOKEN || config.grokApiKey;
-  if (config.useAI && !config.description && githubToken) {
+  if (config.useAI && !config.description) {
     try {
-      info.description = await generateDescription(projectRoot, githubToken);
+      info.description = await generateDescription(projectRoot, true);
     } catch (error) {
       console.warn(chalk.yellow('⚠️ AI description generation failed, using fallback'));
       // If no manual description provided, use a generic one
@@ -115,6 +114,13 @@ async function gatherProjectInfo(config: Config): Promise<ProjectInfo> {
   // Analyze project structure
   if (config.features.includes('featureExtraction') || config.features.includes('apiRoutes')) {
     info.projectStructure = await analyzeProjectStructure(projectRoot);
+    
+    // Extract enhanced features with AI if enabled
+    if (config.features.includes('featureExtraction')) {
+      const { extractFeatures } = await import('./generators/features');
+      const extractedFeatures = await extractFeatures(projectRoot, config.useAI);
+      info.projectStructure.applications[0].features = extractedFeatures;
+    }
   }
   
   // Get screenshots

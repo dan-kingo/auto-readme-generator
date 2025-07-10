@@ -3,13 +3,13 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { ProjectAnalysis } from '../types';
 
-export async function generateDescription(projectRoot: string, githubToken?: string): Promise<string> {
+export async function generateDescription(projectRoot: string, useAI: boolean = true): Promise<string> {
   try {
-    // Use Grok API key from environment or provided token
-    const token = githubToken || process.env.GROK_API_KEY;
+    // Use GitHub token for AI features
+    const token = process.env.GITHUB_TOKEN;
     
-    if (!token) {
-      console.warn('No Grok API key available for AI features');
+    if (!useAI || !token) {
+      console.warn('No GitHub token available for AI features or AI disabled');
       return 'A modern application built with cutting-edge technologies.';
     }
 
@@ -17,25 +17,31 @@ export async function generateDescription(projectRoot: string, githubToken?: str
     const projectInfo = await analyzeProject(projectRoot);
     
     const prompt = `
-Based on the following project information, generate a concise and informative description (2-3 sentences) for this project:
+You are an expert technical writer. Based on the following project analysis, create a compelling and professional project description (2-3 sentences) that clearly explains what this application does and its main value proposition:
 
 Project Name: ${projectInfo.name}
-Main Language: ${projectInfo.language}
-Framework/Library: ${projectInfo.framework}
-Package.json scripts: ${JSON.stringify(projectInfo.scripts, null, 2)}
-Key files: ${projectInfo.keyFiles.join(', ')}
-Dependencies: ${projectInfo.dependencies.slice(0, 10).join(', ')}
+Primary Language: ${projectInfo.language}
+Framework: ${projectInfo.framework}
+Available Scripts: ${Object.keys(projectInfo.scripts).join(', ')}
+Key Files Found: ${projectInfo.keyFiles.join(', ')}
+Main Dependencies: ${projectInfo.dependencies.slice(0, 8).join(', ')}
 
-Generate a professional description that explains what this project does and its main purpose.
+Create a description that:
+1. Clearly states what the application does
+2. Highlights its main purpose and target users
+3. Mentions key technologies used
+4. Sounds professional and engaging
+
+Focus on the application's functionality and benefits, not just the technologies used.
 `;
 
-    // Use GitHub token to access Grok API
-    const response = await axios.post('https://api.x.ai/v1/chat/completions', {
-      model: 'grok-beta',
+    // Use GitHub token to access GitHub Models API (free tier)
+    const response = await axios.post('https://models.inference.ai.azure.com/chat/completions', {
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: 'You are a technical writer specializing in creating clear, concise project descriptions for README files.'
+          content: 'You are an expert technical writer who creates compelling, clear, and professional project descriptions for README files. Focus on what the application does and its value to users, not just the technical stack.'
         },
         {
           role: 'user',
@@ -54,7 +60,7 @@ Generate a professional description that explains what this project does and its
     return response.data.choices[0].message.content.trim();
   } catch (error) {
     console.error('Error generating AI description:', (error as Error).message);
-    return 'A modern application built with cutting-edge technologies.';
+    return 'A modern application built with cutting-edge technologies and best practices.';
   }
 }
 

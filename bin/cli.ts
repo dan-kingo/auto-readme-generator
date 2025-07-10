@@ -52,15 +52,8 @@ program
       {
         type: 'confirm',
         name: 'useAI',
-        message: 'Use AI for enhanced description generation? (requires Grok API key)',
-        default: true
-      },
-      {
-        type: 'input',
-        name: 'grokApiKey',
-        message: 'Grok API key (get from https://console.x.ai):',
-        when: (answers) => answers.useAI,
-        validate: (input) => input.length > 0 || 'Grok API key is required for AI features'
+        message: 'Use AI for enhanced description generation? (requires GITHUB_TOKEN env var)',
+        default: !!process.env.GITHUB_TOKEN
       },
       {
         type: 'checkbox',
