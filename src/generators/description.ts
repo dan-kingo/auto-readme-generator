@@ -5,11 +5,11 @@ import { ProjectAnalysis } from '../types';
 
 export async function generateDescription(projectRoot: string, githubToken?: string): Promise<string> {
   try {
-    // Use environment variable or provided token
-    const token = githubToken || process.env.GITHUB_TOKEN;
+    // Use Grok API key from environment or provided token
+    const token = githubToken || process.env.GROK_API_KEY;
     
     if (!token) {
-      console.warn('No GitHub token available for AI features');
+      console.warn('No Grok API key available for AI features');
       return 'A modern application built with cutting-edge technologies.';
     }
 

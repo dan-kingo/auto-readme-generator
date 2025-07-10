@@ -208,25 +208,9 @@ npm run dev
   if (projectInfo.folderStructure) {
     sections.push('\n## 📁 Detailed Folder Structure');
     
-    if (projectInfo.projectStructure && projectInfo.projectStructure.applications.length > 1) {
-      projectInfo.projectStructure.applications.forEach(app => {
-        if (app.path !== '.') {
-          sections.push(`\n### ${app.name.charAt(0).toUpperCase() + app.name.slice(1)} (\`/${app.path}\`)`);
-          sections.push('```');
-          // You could add specific folder structure for each app here
-          sections.push(`${app.path}/`);
-          sections.push('├── src/                     # Source code');
-          sections.push('├── package.json             # Dependencies and scripts');
-          sections.push('├── .env.example             # Environment variables template');
-          sections.push('└── README.md                # Application documentation');
-          sections.push('```');
-        }
-      });
-    } else {
-      sections.push('```');
-      sections.push(projectInfo.folderStructure);
-      sections.push('```');
-    }
+    sections.push('```');
+    sections.push(projectInfo.folderStructure);
+    sections.push('```');
   }
   
   // Development Commands
